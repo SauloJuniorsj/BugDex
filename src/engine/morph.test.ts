@@ -28,6 +28,13 @@ describe('morphRank', () => {
     expect(morphRank('melanico')).toBeGreaterThan(morphRank('albino'));
     expect(morphRank('albino')).toBeGreaterThan(morphRank('shiny'));
   });
+
+  it('retorna os valores exatos mandatados', () => {
+    expect(morphRank('normal')).toBe(0);
+    expect(morphRank('shiny')).toBe(1);
+    expect(morphRank('albino')).toBe(2);
+    expect(morphRank('melanico')).toBe(3);
+  });
 });
 
 describe('prestigeFromStars', () => {
@@ -38,5 +45,18 @@ describe('prestigeFromStars', () => {
     expect(prestigeFromStars(120)).toBe(3);
     expect(prestigeFromStars(500)).toBe(4);
     expect(prestigeFromStars(5000)).toBe(5);
+  });
+
+  it('cobre limites exatos das faixas de prestígio', () => {
+    expect(prestigeFromStars(0)).toBe(0);
+    expect(prestigeFromStars(1)).toBe(1);
+    expect(prestigeFromStars(9)).toBe(1);
+    expect(prestigeFromStars(10)).toBe(2);
+    expect(prestigeFromStars(49)).toBe(2);
+    expect(prestigeFromStars(50)).toBe(3);
+    expect(prestigeFromStars(199)).toBe(3);
+    expect(prestigeFromStars(200)).toBe(4);
+    expect(prestigeFromStars(999)).toBe(4);
+    expect(prestigeFromStars(1000)).toBe(5);
   });
 });
