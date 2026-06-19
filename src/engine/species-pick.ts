@@ -1,0 +1,11 @@
+import type { NormalizedRepo, Biome, Species } from '../domain/types.js';
+import { stableHash } from '../util/hash.js';
+import { getSpeciesById } from '../content/species.js';
+
+/** Escolhe deterministicamente uma espécie do pool do bioma a partir do id do repo. */
+export function speciesForRepo(repo: NormalizedRepo, biome: Biome): Species {
+  const pool = biome.speciesIds;
+  const idx = stableHash(`${repo.id}:species`) % pool.length;
+  const speciesId = pool[idx]!; // pool nunca é vazio (garantido pelo teste da Task 5)
+  return getSpeciesById(speciesId);
+}
