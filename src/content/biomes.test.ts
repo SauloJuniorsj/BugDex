@@ -38,7 +38,7 @@ describe('biomes dataset', () => {
   });
 
   it('getBiomeById lança em id inexistente', () => {
-    expect(getBiomeById('jardim').nome).toBeTruthy();
+    expect(getBiomeById('jardim').nome).toBe('Jardim Exuberante');
     expect(() => getBiomeById('nada')).toThrow();
   });
 });
