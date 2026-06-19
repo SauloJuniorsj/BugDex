@@ -29,3 +29,36 @@ describe('metamorphosisStage', () => {
     expect(metamorphosisStage(repo({ commitCount: 200, createdAt: '2021-01-01T00:00:00Z', pushedAt: '2024-12-20T00:00:00Z' }), NOW)).toBe('adulto');
   });
 });
+
+describe('metamorphosisStage — bordas', () => {
+  it('commitCount: 4 → ovo (último valor ovo)', () => {
+    expect(metamorphosisStage(repo({ commitCount: 4 }), NOW)).toBe('ovo');
+  });
+
+  it('commitCount: 5 com repo jovem → larva (primeiro acima de ovo)', () => {
+    const createdAt = new Date(NOW.getTime() - 10 * 86_400_000).toISOString();
+    expect(metamorphosisStage(repo({ commitCount: 5, createdAt, pushedAt: NOW.toISOString() }), NOW)).toBe('larva');
+  });
+
+  it('idade exatamente 90 dias: createdAt 90d atrás → adulto (90 não é < 90)', () => {
+    const createdAt = new Date(NOW.getTime() - 90 * 86_400_000).toISOString();
+    expect(metamorphosisStage(repo({ commitCount: 50, createdAt, pushedAt: NOW.toISOString() }), NOW)).toBe('adulto');
+  });
+
+  it('idade exatamente 89 dias: createdAt 89d atrás → larva', () => {
+    const createdAt = new Date(NOW.getTime() - 89 * 86_400_000).toISOString();
+    expect(metamorphosisStage(repo({ commitCount: 50, createdAt, pushedAt: NOW.toISOString() }), NOW)).toBe('larva');
+  });
+
+  it('sem push há exatamente 180 dias → adulto (180 não é > 180)', () => {
+    const createdAt = '2020-01-01T00:00:00Z';
+    const pushedAt = new Date(NOW.getTime() - 180 * 86_400_000).toISOString();
+    expect(metamorphosisStage(repo({ commitCount: 50, createdAt, pushedAt }), NOW)).toBe('adulto');
+  });
+
+  it('sem push há exatamente 181 dias → pupa', () => {
+    const createdAt = '2020-01-01T00:00:00Z';
+    const pushedAt = new Date(NOW.getTime() - 181 * 86_400_000).toISOString();
+    expect(metamorphosisStage(repo({ commitCount: 50, createdAt, pushedAt }), NOW)).toBe('pupa');
+  });
+});
