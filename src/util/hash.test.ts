@@ -3,6 +3,7 @@ import { stableHash } from './hash.js';
 
 describe('stableHash', () => {
   it('é determinístico para a mesma entrada', () => {
+    expect(stableHash('r1:morph')).toBe(4230491240);
     expect(stableHash('r1:morph')).toBe(stableHash('r1:morph'));
   });
 
