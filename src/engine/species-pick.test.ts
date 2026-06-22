@@ -11,7 +11,12 @@ const baseRepo: NormalizedRepo = {
 describe('speciesForRepo', () => {
   it('é determinístico para o mesmo repo+bioma', () => {
     const jardim = getBiomeById('jardim');
-    expect(speciesForRepo(baseRepo, jardim).id).toBe(speciesForRepo(baseRepo, jardim).id);
+    // Duas invocações independentes devem retornar o mesmo resultado.
+    const result1 = speciesForRepo(baseRepo, jardim).id;
+    const result2 = speciesForRepo(baseRepo, jardim).id;
+    expect(result1).toBe(result2);
+    // Valor fixo para evitar regressões silenciosas no algoritmo de hash/seleção.
+    expect(result1).toBe('monarca');
   });
 
   it('sempre retorna uma espécie pertencente ao pool do bioma', () => {
@@ -24,14 +29,10 @@ describe('speciesForRepo', () => {
 
   it('repos diferentes tendem a mapear para espécies diferentes', () => {
     const jardim = getBiomeById('jardim');
-    const a = speciesForRepo({ ...baseRepo, id: 'aaa' }, jardim).id;
-    const b = speciesForRepo({ ...baseRepo, id: 'zzz' }, jardim).id;
     // não garantimos sempre diferente, mas o hash não deve fixar tudo num só.
     const distintos = new Set(
       Array.from({ length: 20 }, (_, i) => speciesForRepo({ ...baseRepo, id: `id${i}` }, jardim).id),
     );
     expect(distintos.size).toBeGreaterThan(1);
-    expect(typeof a).toBe('string');
-    expect(typeof b).toBe('string');
   });
 });

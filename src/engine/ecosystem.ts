@@ -24,11 +24,10 @@ function buildSpecimen(repo: NormalizedRepo, now: Date): SpecimenWithRepo {
   return { specimen, repo, biome };
 }
 
-function biomeProminence(biome: Biome, profile: NormalizedProfile, specimenCount: number): number {
+function biomeBytes(biome: Biome, profile: NormalizedProfile): number {
   let bytes = 0;
   for (const lang of biome.languages) bytes += profile.languageBytes[lang] ?? 0;
-  // bytes domina; nº de espécimes desempata.
-  return bytes * 1000 + specimenCount;
+  return bytes;
 }
 
 export function computeEcosystem(profile: NormalizedProfile, now: Date): Ecosystem {
@@ -47,11 +46,13 @@ export function computeEcosystem(profile: NormalizedProfile, now: Date): Ecosyst
       biome: arr[0]!.biome,
       specimens: arr.map((x) => x.specimen),
     }))
-    .sort(
-      (a, b) =>
-        biomeProminence(b.biome, profile, b.specimens.length) -
-        biomeProminence(a.biome, profile, a.specimens.length),
-    );
+    .sort((a, b) => {
+      // Primário: soma de bytes das linguagens do bioma (desc).
+      const bytesDiff = biomeBytes(b.biome, profile) - biomeBytes(a.biome, profile);
+      if (bytesDiff !== 0) return bytesDiff;
+      // Desempate: número de espécimes (desc).
+      return b.specimens.length - a.specimens.length;
+    });
 
   const biodiversidade = new Set(built.map((b) => b.specimen.species.id)).size;
 
