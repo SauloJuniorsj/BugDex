@@ -34,3 +34,6 @@ Thumbs.db
 coverage/
 .cache/
 *.local
+
+# SDD scratch (briefs, diffs, progress ledger)
+.superpowers/
