@@ -13,4 +13,13 @@
 
 ## Status
 
-🧪 Brainstorming → design → plano de implementação.
+🧪 Fase 1 (engine + conteúdo) completa. Fase 2a (ingestão GitHub + cache de snapshot, headless) em implementação.
+
+### Rodar a ingestão (smoke manual)
+
+```bash
+export GITHUB_TOKEN=<seu_PAT>   # escopo public_repo/read:user
+npm run ingest -- <login-github>
+```
+
+Imprime o ecossistema computado e salva o snapshot em `.snapshots/<login>.json`.
