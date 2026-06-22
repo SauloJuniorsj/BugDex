@@ -23,3 +23,13 @@ npm run ingest -- <login-github>
 ```
 
 Imprime o ecossistema computado e salva o snapshot em `.snapshots/<login>.json`.
+
+### Gerar o embed SVG (smoke manual)
+
+Após ter um snapshot (via `npm run ingest`), gere o SVG do perfil:
+
+```bash
+npm run embed -- <login-github>
+```
+
+Lê `.snapshots/<login>.json` e grava `.embed/<login>.svg` — abra no browser para inspecionar.

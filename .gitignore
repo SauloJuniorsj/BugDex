@@ -40,3 +40,6 @@ coverage/
 
 # Snapshots (ingestão local de perfis do GitHub)
 .snapshots/
+
+# Saída local do embed SVG (não versionada)
+.embed/
