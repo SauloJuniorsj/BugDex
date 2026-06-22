@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import type { Ecosystem } from '../domain/types.js';
 import type { SnapshotStore, StoredSnapshot } from './snapshot-store.js';
 import { InMemorySnapshotStore } from './in-memory-store.js';
+import { FileSnapshotStore } from './file-store.js';
 
 const ECO_VAZIO: Ecosystem = {
   login: 'dev', avatarUrl: '', biomes: [], biodiversidade: 0, rarest: null, totalEspecimes: 0,
@@ -40,3 +44,8 @@ export function runStoreContract(
 }
 
 runStoreContract('InMemory', () => new InMemorySnapshotStore());
+
+runStoreContract('File', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'bugdex-store-'));
+  return new FileSnapshotStore(dir);
+});
