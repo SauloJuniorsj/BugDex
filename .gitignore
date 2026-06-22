@@ -37,3 +37,6 @@ coverage/
 
 # SDD scratch (briefs, diffs, progress ledger)
 .superpowers/
+
+# Snapshots (local GitHub profile ingestión)
+.snapshots/
