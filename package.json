@@ -8,7 +8,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "demo": "tsx src/demo.ts",
-    "ingest": "tsx src/ingest-cli.ts"
+    "ingest": "tsx src/ingest-cli.ts",
+    "embed": "tsx src/embed-cli.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
